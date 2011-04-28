@@ -11,12 +11,16 @@ class FollowController {
 
     @Secured('IS_AUTHENTICATED_FULLY')
     def index = {
-       springSecurityService.currentUser.addToFollowed(User.findByUsername(params.id))
-       User.withTransaction {
-           status->
-            User u = springSecurityService.currentUser
-            u.save()
-       }
+
+        User.withTransaction {
+            status ->
+            def newlyFollowed = User.findByUsername(params.id)
+            def me = springSecurityService.currentUser
+            springSecurityService.currentUser.addToFollowed(newlyFollowed)
+            newlyFollowed.addToFollowers(me)
+            me.save()
+            newlyFollowed.save()
+        }
 
        redirect(controller:'profiles',action:'index')
     }

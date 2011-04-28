@@ -9,7 +9,7 @@ class User {
 	boolean accountLocked
 	boolean passwordExpired
 
-    static hasMany = [openIds: OpenId, followed: User]
+    static hasMany = [openIds: OpenId, followed: User, followers:User]
 
 	static constraints = {
 		username blank: false, unique: true

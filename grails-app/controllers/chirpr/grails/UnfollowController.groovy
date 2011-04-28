@@ -5,20 +5,26 @@ import org.jboss.chirpr.grails.domain.User
 
 class UnfollowController {
 
-    def  springSecurityService
+    def springSecurityService
 
-    static allowedMethods = [POST:"index"]
+    static allowedMethods = [POST: "index"]
 
     @Secured('IS_AUTHENTICATED_FULLY')
     def index = {
-       springSecurityService.currentUser.removeFromFollowed(User.findByUsername(params.id))
-       User.withTransaction {
-           status->
-            User u = springSecurityService.currentUser
-            u.save()
-       }
+        springSecurityService.currentUser.removeFromFollowed(User.findByUsername(params.id))
+        User.withTransaction {
+            status ->
+            def previouslyFollowed = User.findByUsername(params.id)
+            def me = springSecurityService.currentUser
+            me.removeFromFollowed(previouslyFollowed)
+            previouslyFollowed.removeFromFollowers(me)
+            me.save()
+            previouslyFollowed.save()
 
-       redirect(controller:'profiles',action:'index')
+        }
+
+
+        redirect(controller: 'profiles', action: 'index')
     }
 
 }

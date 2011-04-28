@@ -7,10 +7,16 @@ class ChirpController {
 
     def springSecurityService
 
-    def index = { }
-
     @Secured('IS_AUTHENTICATED_FULLY')
-    def chirps = {
+    def index = {
+
+        def chirp = new Chirp(author: springSecurityService.currentUser, postedOn: new Date(), text: params.text)
+        Chirp.withTransaction {
+            chirp.save()
+        }
+        redirect(controller: 'root', action: 'index')
+
 
     }
+
 }
