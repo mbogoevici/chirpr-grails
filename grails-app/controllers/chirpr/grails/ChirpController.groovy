@@ -1,6 +1,7 @@
 package chirpr.grails
 
 import grails.plugins.springsecurity.Secured
+import org.jboss.chirpr.grails.domain.Chirp
 
 class ChirpController {
 
@@ -10,6 +11,6 @@ class ChirpController {
 
     @Secured('IS_AUTHENTICATED_FULLY')
     def chirps = {
-        return
+
     }
 }
