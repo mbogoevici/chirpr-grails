@@ -27,7 +27,7 @@
                     Sent by
                 </span>
                 <span>
-                    Sent by <a href="/?author=${chirp.author.username}">${chirp.author.username}</a> on ${chirp.postedOn}
+                    Sent by <a href="${createLink(controller:'root',action:'index',params:[author:chirp.author.username])}">${chirp.author.username}</a> on ${chirp.postedOn}
                 </span>
             </li>
         </g:each>
